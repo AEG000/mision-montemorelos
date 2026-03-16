@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparativa Pro - Misión Cabaña</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body style="background: #000; margin: 0; overflow-x: hidden;">
+
+    <template id="comparison-slider">
+        <style>
+            :host {
+                display: block;
+                /* El margen vertical (arriba y abajo) para separar de otras secciones */
+                margin: 60px 0; 
+                --bg-card: rgba(20, 20, 20, 0.98);
+                font-family: 'Inter', sans-serif;
+                
+                /* Colores por Sección */
+                --luxe-color: 230, 126, 34;   /* Naranja */
+                --ext-color: 46, 204, 113;    /* Verde */
+                --cook-color: 52, 152, 219;   /* Azul */
+                --serv-color: 155, 89, 182;   /* Morado */
+            }
+
+            .viewport {
+                /* CLAVE: 100% del ancho menos 40px (20px de cada lado) */
+                width: calc(100% - 40px); 
+                /* CLAVE: centra el contenedor dentro del index2 */
+                margin: 0 auto; 
+                
+                overflow-x: auto;
+                background: var(--bg-card);
+                border-radius: 20px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(20px);
+                scrollbar-width: thin;
+                scrollbar-color: #e67e22 transparent;
+                
+                /* Opcional: una sombra sutil para que resalte del fondo negro */
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            }
+
+            /* Scrollbar */
+            .viewport::-webkit-scrollbar { height: 10px; }
+            .viewport::-webkit-scrollbar-thumb { background: #e67e22; border-radius: 10px; }
+
+            table { border-collapse: collapse; white-space: nowrap; width: max-content; }
+
+            /* --- ESTILOS DE CATEGORÍA (NIVEL 1) --- */
+            .cat-label {
+                font-size: 0.8rem;
+                font-weight: 900;
+                text-align: center;
+                padding: 15px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                position: relative;
+                z-index: 5; /* Por debajo de la columna fija */
+            }
+
+            .cat-luxe { 
+                background: rgba(255,165,0,0.2); 
+                color: rgb(255,140,0); 
+                border-bottom: 3px solid rgb(255,140,0) !important; 
+            }
+
+            .cat-ext  { 
+                background: rgba(120,72,32,0.2); 
+                color: rgb(255,140,0); 
+                border-bottom: 3px solid rgb(120,72,32) !important; 
+            }
+
+            .cat-cook { 
+                background: rgba(255,165,0,0.2); 
+                color: rgb(255,140,0); 
+                border-bottom: 3px solid rgb(255,140,0) !important; 
+            }
+
+            .cat-serv { 
+                background: rgba(120,72,32,0.2); 
+                color: rgb(255,140,0); 
+                border-bottom: 3px solid rgb(120,72,32) !important; 
+            }
+
+
+            /* --- TINTES DE COLUMNA --- */
+
+            .col-luxe { 
+                background: rgba(255,165,0,0.06); 
+                color: rgb(255,140,0);
+            }
+
+            .col-ext  { 
+                background: rgba(120,72,32,0.08); 
+            }
+
+            .col-cook { 
+                background: rgba(255,165,0,0.06); 
+            }
+
+            .col-serv { 
+                background: rgba(120,72,32,0.08); 
+            }
+
+            .feature-row th {
+                padding: 15px 25px;
+                color: #888;
+                font-size: 0.7rem;
+                text-transform: uppercase;
+            }
+
+            /* --- COLUMNA FIJA (STICKY) --- */
+            .sticky-col {
+                position: sticky;
+                left: 0;
+                background: #111;
+                z-index: 20; /* Prioridad alta */
+                min-width: 140px;
+                padding: 10px;
+                border-right: 3px solid #e67e22;
+                text-align: left;
+                border-bottom: 1px;
+            }
+
+            .corner-header {
+                background: #1a1a1a !important;
+                color: #fff;
+                font-weight: 900;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                z-index: 25; /* El elemento más alto */
+            }
+
+            .cabin-wrapper { display: flex; align-items: center; gap: 15px; }
+            .cabin-img { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; border: 2px solid #333; }
+            .cabin-name { color: #fff; font-weight: 900; font-size: 1.1rem; }
+            .cabin-meta { color: #e67e22; font-size: 0.65rem; text-transform: uppercase; font-weight: bold; }
+
+            /* --- CELDAS --- */
+            td { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .check { color: #2ecc71; font-size: 1.5rem; font-weight: bold; }
+            .cross { color: #e74c3c; opacity: 0.2; font-size: 1.5rem; }
+
+            tr:hover td:not(.sticky-col) { background: rgba(255,255,255,0.08); }
+        </style>
+
+        <div class="viewport">
+        <table>
+        <thead>
+        <tr>
+        <th class="sticky-col corner-header">Cabañas</th>
+
+        <th colspan="7" class="cat-label cat-luxe">💎 Lujos y Diferenciadores</th>
+        <th colspan="8" class="cat-label cat-ext">🏊 Exterior y Diversión</th>
+        <th colspan="8" class="cat-label cat-cook">🍳 Cocina y Comedor</th>
+        <th colspan="11" class="cat-label cat-serv">🧺 Conectividad y Servicios</th>
+        </tr>
+
+        <tr class="feature-row">
+        <th class="sticky-col" style="font-size:0.6rem;color:#555;">DESLIZA ➔</th>
+
+        <!-- LUXE -->
+        <th class="col-luxe">Jacuzzi</th>
+        <th class="col-luxe">Pantalla 70"</th>
+        <th class="col-luxe">Streaming</th>
+        <th class="col-luxe">Espresso</th>
+        <th class="col-luxe">Vistas</th>
+        <th class="col-luxe">AC Central</th>
+
+        <!-- EXTERIOR -->
+        <th class="col-ext">Alberca</th>
+        <th class="col-ext">Fogatero</th>
+        <th class="col-ext">Parrilla</th>
+        <th class="col-ext">Juegos Niños</th>
+        <th class="col-ext">Jardín</th>
+        <th class="col-ext">Terraza</th>
+        <th class="col-ext">Muebles</th>
+        <th class="col-ext">Camastros</th>
+
+        <!-- COCINA -->
+        <th class="col-cook">Equipada</th>
+        <th class="col-cook">Refri</th>
+        <th class="col-cook">Micro</th>
+        <th class="col-cook">Estufa</th>
+        <th class="col-cook">Licuadora</th>
+        <th class="col-cook">Tostador</th>
+        <th class="col-cook">Copas Vino</th>
+        <th class="col-cook">Vajilla</th>
+
+        <!-- SERVICIOS -->
+        <th class="col-serv">WiFi</th>
+        <th class="col-serv">Ethernet</th>
+        <th class="col-serv">Lavadora</th>
+        <th class="col-serv">Secadora</th>
+        <th class="col-serv">Plancha</th>
+        <th class="col-serv">Mascotas</th>
+        <th class="col-serv">Smart Lock</th>
+        <th class="col-serv">Parking</th>
+        <th class="col-serv">Work Desk</th>
+        <th class="col-serv">Self Check-in</th>
+        <th class="col-serv">Cámaras Ext</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <!-- TERESA -->
+        <tr>
+        <td class="sticky-col">
+        <div class="cabin-wrapper">
+        <img src="https://a0.muscache.com/im/pictures/382d242a-f92c-4b97-80a6-ffbf7a3acaca.jpg?im_w=1200" class="cabin-img">
+        <div class="cabin-info"><span class="cabin-name">Teresa</span></div>
+        </div>
+        </td>
+
+        <td class="col-luxe check">✔</td>
+        <td class="col-luxe check">✔</td>
+        <td class="col-luxe check">✔</td>
+        <td class="col-luxe check">✔</td>
+        <td class="col-luxe check">✔</td>
+        <td class="col-luxe check">✔</td>
+
+        <td class="col-ext check">✔</td>
+        <td class="col-ext cross">✘</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext cross">✘</td>
+
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv cross">✘</td>
+        <td class="col-serv cross">✘</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        </tr>
+
+        <!-- ELENA -->
+        <tr>
+        <td class="sticky-col">
+        <div class="cabin-wrapper">
+        <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/7e6acd7c-5e81-4f87-bd4a-52270a8ece18.jpeg?im_w=1440" class="cabin-img">
+        <div class="cabin-info"><span class="cabin-name">Elena</span></div>
+        </div>
+        </td>
+
+        <td class="col-luxe cross">✘</td>
+        <td class="col-luxe cross">✘</td>
+        <td class="col-luxe cross">✘</td>
+        <td class="col-luxe cross">✘</td>
+        <td class="col-luxe cross">✘</td>
+        <td class="col-luxe cross">✘</td>
+
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext cross">✘</td>
+
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+
+        <td class="col-serv check">✔</td>
+        <td class="col-serv cross">✘</td>
+        <td class="col-serv cross">✘</td>
+        <td class="col-serv cross">✘</td>
+        <td class="col-serv cross">✘</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv cross">✘</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv cross">✘</td>
+        <td class="col-serv check">✔</td>
+        </tr>
+
+        <!-- MODERNA -->
+        <tr>
+        <td class="sticky-col">
+        <div class="cabin-wrapper">
+        <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1537789990677857104/original/768ded2e-810f-4432-8770-5a6458ef79ce.jpeg?im_w=1200" class="cabin-img">
+        <div class="cabin-info"><span class="cabin-name">Moderna</span></div>
+        </div>
+        </td>
+
+        <td class="col-luxe cross">✘</td>
+        <td class="col-luxe check">✔</td>
+        <td class="col-luxe cross">✘</td>
+        <td class="col-luxe cross">✘</td>
+        <td class="col-luxe cross">✘</td>
+        <td class="col-luxe check">✔</td>
+
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext cross">✘</td>
+        <td class="col-ext cross">✘</td>
+        <td class="col-ext cross">✘</td>
+        <td class="col-ext check">✔</td>
+        <td class="col-ext check">✔</td>
+
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook check">✔</td>
+        <td class="col-cook cross">✘</td>
+        <td class="col-cook cross">✘</td>
+        <td class="col-cook check">✔</td>
+
+        <td class="col-serv check">✔</td>
+        <td class="col-serv cross">✘</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv cross">✘</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv cross">✘</td>
+        <td class="col-serv check">✔</td>
+        <td class="col-serv check">✔</td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+    </template>
+
+    <script>
+        const template = document.getElementById('comparison-slider');
+        const preview = document.createElement('div');
+        preview.attachShadow({mode: 'open'}).appendChild(template.content.cloneNode(true));
+        document.body.appendChild(preview);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operación Montemorelos | Boda de Caro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&family=Special+Elite&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #1a1512;
+            --card-bg: rgba(43, 32, 22, 0.85);
+            --accent: #c29547;
+            --text: #f4ede4;
+            --highlight: #e67e22;
+            --wood: #4b3621;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #000;
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-family: 'special elite', cursive;
+        }
+
+        /* CAPAS DE FONDO */
+        .sky {
+            position: fixed;
+            inset: 0;
+            z-index: -5;
+            background: radial-gradient(1400px 700px at 50% -20%, #ffb347 0%, #d27a3a 20%, #5b3a24 35%, #1a1512 50%, #000 100%);
+        }
+
+        .stars {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.1; transform: scale(0.8); }
+            100% { opacity: 0.8; transform: scale(1.2); }
+        }
+
+        /* CONTENIDO */
+        .content { width: 100%; position: relative; z-index: 2; }
+
+        /* HERO - FOTO RESTAURADA */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content h1 { font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.1; margin-bottom: 20px; font-family: 'Special Elite', cursive; }
+        .hero-content p { font-size: 1.2rem; letter-spacing: 3px; color: white; font-family: 'Special Elite', cursive;}
+        .tour { padding: 80px 5%; max-width: 1400px; margin: 0 auto; }
+        .tour-row { margin-bottom: 100px; }
+        .section-title {
+            text-align: center; color: var(--accent); font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: 50px; border-bottom: 1px solid var(--wood); padding-bottom: 15px;
+            font-family: 'Special Elite', cursive;
+        }
+
+        .comparison-grid {
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); /* Tus 3 columnas */            
+            gap: 30px;
+            padding: 0 20px; /* <--- ESTO despega las cards de los bordes izquierdo y derecho */
+            max-width: 1600px; /* Evita que en pantallas gigantes se estiren infinito */
+            margin: 0 auto;    /* Centra todo el bloque */
+        }
+        /* 2. Ajuste para celulares (Media Query) */
+        @media (max-width: 768px) {
+        .comparison-grid {
+            grid-template-columns: 1fr; /* En cel se pone una debajo de otra */
+            padding: 0 25px; /* Un poco más de aire en móvil */
+    }
+}
+
+        .tour-item {
+            background: var(--card-bg); border-radius: 12px; padding: 20px;
+            border: 1px solid rgba(255,255,255,0.05); transition: transform .3s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .tour-item:hover { transform: translateY(-5px); border-color: var(--accent); }
+
+        .img-wrapper {
+            width: 100%; height: 250px; overflow: hidden; border-radius: 8px;
+            margin-bottom: 20px; background: #222;
+        }
+
+        .img-wrapper img { width: 100%; height: 100%; object-fit: cover; opacity: .8; transition: transform .6s ease; }
+        .tour-item:hover img { transform: scale(1.05); opacity: 1; }
+
+        /* FOOTER & FOGATA FIX */
+        .footer {
+    padding: 150px 5%;
+    text-align: center;
+    background: transparent; /* Antes estaba en #000 */
+    position: relative;
+    overflow: hidden;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#sparks-canvas {
+    position: fixed; /* Fixed para que siempre cubra la pantalla al scrollear */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Crucial: para que puedas seguir haciendo clic a los botones */
+    z-index: 9999; /* Por debajo del emoji pero por encima de las fotos */
+}
+
+        .fuego-glow {
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            max-width: 100%;
+            width: 100%; 
+            height: 60px; /* Altura reducida en eje Y */
+            background: radial-gradient(50% 100% at 50% 100%, rgba(230, 126, 34, 0.6) 0%, transparent 80%);
+            pointer-events: none; 
+            z-index: 1; 
+            opacity: 0;
+        }
+
+        .btn-vote {
+            display: inline-block; padding: 20px 40px; background: var(--accent);
+            color: #000; text-decoration: none; font-weight: bold;
+            font-family: 'Special Elite', cursive; border-radius: 50px;
+            transition: .3s; position: relative; z-index: 5;
+        }
+
+        .btn-vote:hover { background: var(--highlight); transform: scale(1.05); box-shadow: 0 0 30px rgba(230, 126, 34, 0.4); }
+
+        .reveal { opacity: 0; }
+
+        /* --- STYLES PARA EL RATÓN PULSE GLOW --- */
+.mouse-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: rgba(230, 126, 34, 0.3); /* Naranja Tostado */
+    border-radius: 50%;
+    pointer-events: none; /* Importante: no interfiere con los clics */
+    z-index: 10000; /* Siempre por encima de todo */
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 15px rgba(230, 126, 34, 0.5);
+    animation: cursor-pulse 1.5s infinite alternate;
+    opacity: 0; /* Empieza oculto hasta que se mueve el mouse */
+    transition: opacity 0.3s ease;
+}
+
+/* El punto central más brillante */
+.mouse-cursor::after {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px; height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+}
+
+@keyframes cursor-pulse {
+    0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 15px rgba(230, 126, 34, 0.5); }
+    100% { transform: translate(-50%, -50%) scale(1.3); box-shadow: 0 0 30px rgba(230, 126, 34, 0.8); }
+}
+
+/* --- AJUSTE DE ESTRELLAS PARA PARALAJE --- */
+.stars {
+    position: fixed; /* Fixed para que cubra toda la pantalla siempre */
+    /* Lo hacemos un 10% más grande para que al moverse con el mouse no se vean los bordes */
+    top: -5%; left: -5%;
+    width: 110%; height: 110%;
+    pointer-events: none;
+    z-index: -2;
+    will-change: transform; /* Optimización para animaciones suaves */
+}
+
+/* Estrellas más pequeñas y sutiles para que se vea más real */
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle 4s infinite alternate; /* Twinkle más lento */
+}
+
+html, body {
+    cursor: none; /* Escondemos la flecha blanca de Windows/Mac */
+}
+
+a, button, .tour-item {
+    cursor: none; /* También en los links para que no aparezca la manita */
+}
+
+.mouse-emoji {
+    position: fixed;
+    top: 0; left: 0;
+    font-size: 32px; /* Tamaño de la herradura */
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    user-select: none;
+    line-height: 1;
+}
+
+/* --- CUSTOM SCROLLBAR --- */
+
+/* 1. El ancho de la barra */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* 2. El fondo de la barra (el camino) */
+::-webkit-scrollbar-track {
+    background: #1a0f05; /* Un café muy oscuro para que combine con el sky */
+}
+
+/* 3. La barrita que se mueve (el thumb) */
+::-webkit-scrollbar-thumb {
+    background: #e67e22; /* El naranja de tus chispas */
+    border-radius: 10px;
+    border: 2px solid #1a0f05; /* Le da un pequeño margen para que se vea más fina */
+}
+
+/* 4. Efecto cuando pasas el mouse sobre la barra */
+::-webkit-scrollbar-thumb:hover {
+    background: #d35400; /* Un naranja más oscuro al hacer hover */
+}
+
+/* Para Firefox (soporte limitado pero funcional) */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #e67e22 #1a0f05;
+}
+.progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px; /* Un poquito más gruesa para que luzca el degradado */
+    background: transparent;
+    z-index: 10001; /* Un nivel arriba del emoji y de todo */
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    /* Degradado de fuego: de un naranja claro a uno más intenso */
+    background: linear-gradient(90deg, #f39c12, #e67e22, #d35400);
+    box-shadow: 0 0 15px rgba(230, 126, 34, 0.7); /* Glow para que combine con las chispas */
+    border-radius: 0 4px 4px 0;
+}
+.reveal span {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+}
+/* Contenedor del Slider */
+.img-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.slider-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Oculta scroll en Firefox */
+}
+
+.slider-container::-webkit-scrollbar {
+    display: none; /* Oculta scroll en Chrome/Safari */
+}
+
+.slider-container img {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 250px; /* Ajusta según prefieras */
+    object-fit: cover;
+    scroll-snap-align: start;
+}
+
+/* Flechas (Chevrons) */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    cursor: none !important; /* Reforzamos que no salga nada */
+    user-select: none;      /* Evita que se seleccione el símbolo de la flecha */
+    pointer-events: auto;   /* Permite que el click siga funcionando */
+    border-radius: 50%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s;
+}
+
+.slider-btn:hover { background: var(--accent); }
+.prev { left: 10px; }
+.next { right: 10px; }
+
+.slider-btn.hidden {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none !important; /* Evita que el usuario de click a algo invisible */
+}
+.img-slider .slider-btn.hidden {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important; /* Refuerzo extra */
+}
+
+
+/* Estilo para la descripción debajo de los sliders */
+.tour-item p {
+    margin-top: 15px;      /* Despega el texto de la imagen */
+    padding: 0 10px;       /* Un poco de aire a los lados */
+    color: #bbb;           /* Gris claro para que no sea tan chillante como el blanco */
+    font-size: 0.9rem;     /* Un pelín más chico para jerarquía */
+    line-height: 1.5;      /* Espaciado entre líneas para mejor lectura */
+    font-weight: 400;
+}
+
+/* Aprovechando, vamos a darle estilo al H3 si es que lo usas ahí */
+.tour-item h3 {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    color: var(--accent);  /* Tu color naranja/fuego */
+    font-family: 'Special Elite', cursive; /* O la que estés usando */
+}
+
+/* --- ESTILOS LOGÍSTICA EN GRID --- */
+
+.dist-info {
+    margin-top: 20px;
+    text-align: left;
+    padding: 0 10px;
+}
+
+.dist-time {
+    display: block;
+    font-family: 'Special Elite', cursive;
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+/* Contenedor de la barra */
+.dist-bar-bg {
+    width: 100%;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 15px; /* Un poco más de espacio */
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* El relleno (Animado por GSAP) */
+.dist-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    box-shadow: 0 0 12px currentColor; 
+    display: block;
+}
+
+/* Colores tácticos con Glow mejorado */
+.color-fast { 
+    background-color: #2ecc71; 
+    color: #2ecc71; 
+    filter: drop-shadow(0 0 5px rgba(46, 204, 113, 0.5)); 
+} 
+.color-mid { 
+    background-color: #f1c40f; 
+    color: #f1c40f; 
+}  
+.color-slow { 
+    background-color: #e74c3c; 
+    color: #e74c3c; 
+}
+
+.dist-meta {
+    font-size: 0.85rem;
+    color: #bbb;
+    line-height: 1.6;
+    margin-bottom: 5px;
+}
+
+/* Botón de ruta estilo minimalista */
+.btn-ruta {
+    display: block;
+    margin-top: 15px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 900;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.btn-ruta:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(230, 126, 34, 0.4);
+    transform: translateY(-2px);
+}
+
+/* El Brillo de Elena (Mejor Opción) */
+.best-option {
+    position: relative;
+    animation: glow-pulse 2s infinite alternate;
+}
+
+@keyframes glow-pulse {
+    from { box-shadow: 0 0 5px rgba(46, 204, 113, 0.2); }
+    to { box-shadow: 0 0 20px rgba(46, 204, 113, 0.5); }
+}
+
+.dist-meta strong {
+    color: #fff;
+}
+
+.audio-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 9999;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    border-radius: 50px;
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    letter-spacing: 1px;
+}
+
+.audio-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #2ecc71; /* Verde como la opción de Elena */
+    transform: scale(1.05);
+}
+
+.audio-btn.playing {
+    border-color: #2ecc71;
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.2);
+}
+
+.audio-icon {
+    font-size: 1.1rem;
+}
+
+/* Animación de pulso cuando suena */
+.audio-btn.playing .audio-icon {
+    animation: audio-pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes audio-pulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.7; }
+}
+    </style>
+    
+</head>
+
+<body>
+    <audio id="mision-audio" loop>
+        <source src="./assets/background-mission.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="audio-control" class="audio-btn">
+        <span class="audio-icon">🔈</span>
+        <span class="audio-text">INICIAR MISIÓN</span>
+    </div>
+
+   <div class="progress-container"><div class="progress-bar"></div></div>
+    <div class="mouse-cursor"></div>
+    <div class="sky"></div>
+    <div class="stars"></div>
+
+    <div class="content">
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="reveal">OPERACIÓN <br><span style="color:var(--accent)">MONTEMORELOS</span></h1>
+                <p class="reveal">MISIÓN CABAÑA: BODA DE CARO | 23 - 24 MAYO 2026</p>
+            </div>
+        </section>
+
+        <section class="tour">
+            <div class="tour-row">
+                <h2 class="section-title reveal">01. La Fachada</h2>
+                <div class="comparison-grid">
+                    <div class="tour-item reveal">
+                        <span class="option-label">Opción 1</span>
+                        <div class="img-wrapper"><img src="https://a0.muscache.com/im/pictures/382d242a-f92c-4b97-80a6-ffbf7a3acaca.jpg?im_w=1200"></div>
+                        <h3>Cabaña Teresa</h3>
+                        <p>Vibe 100% rústica de madera. Un clásico de Montemorelos.</p>
+                    </div>
+                    <div class="tour-item reveal">
+                        <span class="option-label">Opción 2</span>
+                        <div class="img-wrapper"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/7e6acd7c-5e81-4f87-bd4a-52270a8ece18.jpeg?im_w=1440"></div>
+                        <h3>Cabaña Elena</h3>
+                        <p>La VIP. Combinación moderna y elegante en el bosque.</p>
+                    </div>
+                    <div class="tour-item reveal">
+                        <span class="option-label">Opción 3</span>
+                        <div class="img-wrapper"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1537789990677857104/original/768ded2e-810f-4432-8770-5a6458ef79ce.jpeg?im_w=1200"></div>
+                        <h3>Quinta Moderna</h3>
+                        <p>Casa de campo espaciosa con barda perimetral y mucha luz.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tour-row">
+                <h2 class="section-title reveal">02. El Cuartel del Asado</h2>
+                <div class="comparison-grid">
+                    <div class="tour-item reveal">
+                        <span class="option-label">TERESA</span>
+                        <div class="img-wrapper"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-836494336195573749/original/fd61cda0-9173-448d-bc1a-8a25252613a3.jpeg?im_w=720"></div>
+                        <p>Funcional, vista a los árboles. Sencillo pero cumple.</p>
+                    </div>
+                    <div class="tour-item reveal">
+                        <span class="option-label">ELENA</span>
+                        <div class="img-wrapper"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/d41f1650-64d5-4e24-be21-520732559cd9.jpeg?im_w=1440"></div>
+                        <p>Pérgola con foquitos y fogatero. Muy buena ondita. Algo bien.</p>
+                    </div>
+                    <div class="tour-item reveal">
+                        <span class="option-label">QUINTA</span>
+                        <div class="img-wrapper"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1537789990677857104/original/8df8302d-4b90-4fec-9401-92cba9e6905b.jpeg?im_w=720"></div>
+                        <p>Techado, con tele y barra. San Pedro Vibes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tour-row">
+                <h2 class="section-title reveal">03. El Descanso</h2>
+                <div class="comparison-grid">
+
+                    <div class="tour-item reveal">
+                        <span class="option-label">TERESA</span>
+                        <div class="img-slider">
+                            <button class="slider-btn prev" onclick="moveSlider(this, -1)">‹</button>
+                            <div class="slider-container">
+                                <img src="https://a0.muscache.com/im/pictures/695ab0f8-9d24-4f60-b998-6b0a6683584c.jpg?im_w=720" alt="Recámara Teresa 1">
+                                <img src="https://a0.muscache.com/im/pictures/2f88f838-bf60-4554-a086-3afede88cca6.jpg?im_w=720" alt="Recámara Teresa 2">
+                                <img src="https://a0.muscache.com/im/pictures/miso/Hosting-836494336195573749/original/f0dd34d2-6fa8-43dc-99f8-7d2e03e60d6b.jpeg?im_w=720" alt="Recámara Teresa 3">
+                                <img src="https://a0.muscache.com/im/pictures/miso/Hosting-836494336195573749/original/3034da55-50f6-41d4-9582-423e64fffd15.jpeg?im_w=720" alt="Recámara Teresa 4">
+                                <img src="https://a0.muscache.com/im/pictures/6fb42f3e-d16e-4fe5-a4c6-4fbe43c3b213.jpg?im_w=720" alt="Recámara Teresa 5">
+                                <img src="https://a0.muscache.com/im/pictures/b3fb96cc-03da-45b2-a0b4-f87c0aed9ac1.jpg?im_w=1200" alt="Recámara Teresa 6">
+                                <img src="https://a0.muscache.com/im/pictures/d3b331ef-321e-4648-9b94-c3d6cad31f56.jpg?im_w=720" alt="Recámara Teresa 7">
+                            </div>
+                            <button class="slider-btn next" onclick="moveSlider(this, 1)">›</button>
+                        </div>
+                        <p>Las tres recámaras se muestran en orden para apreciar los distintos espacios disponibles.</p>
+                    </div>
+
+                    <div class="tour-item reveal">
+                        <span class="option-label">ELENA</span>
+                        <div class="img-slider">
+                            <button class="slider-btn prev" onclick="moveSlider(this, -1)">‹</button>
+                            <div class="slider-container">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/68295dcc-ac06-4d85-82e0-372c6f2aa83f.jpeg?im_w=1200" alt="Descanso Elena 1">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/e7886d43-5927-49c7-b8bb-5d55c3a5e312.jpeg?im_w=720" alt="Descanso Elena 2">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/bb661dc6-19b4-4188-af0a-ac4e07211c16.jpeg?im_w=720" alt="Descanso Elena 3">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/d8362f20-538a-4db1-a308-16df0c09d6f8.jpeg?im_w=720" alt="Descanso Elena 4">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/13182038-3fa3-4baa-86da-6f21725e8dd6.png?im_w=1200" alt="Descanso Elena 5">
+                            </div>
+                            <button class="slider-btn next" onclick="moveSlider(this, 1)">›</button>
+                        </div>
+                        <p>No cuenta con recámaras separadas; dispone de dos sofá cama amplios y cómodos, para mayor convivencia.</p>
+                    </div>
+
+                    <div class="tour-item reveal">
+                        <span class="option-label">QUINTA</span>
+                        <div class="img-slider">
+                            <button class="slider-btn prev" onclick="moveSlider(this, -1)">‹</button>
+                            <div class="slider-container">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1537789990677857104/original/354916d3-238b-4945-8bf2-2fd495636619.jpeg?im_w=1200" alt="Recámara Quinta 1">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1537789990677857104/original/4a617d46-6ac4-4c64-9205-30426d5f70f6.jpeg?im_w=1200" alt="Recámara Quinta 2">
+                            </div>
+                            <button class="slider-btn next" onclick="moveSlider(this, 1)">›</button>
+                        </div>
+                        <p>Las habitaciones se muestran en orden para dar una idea clara de los espacios disponibles.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="tour-row">
+                <h2 class="section-title reveal">04. Zona de Aseo</h2>
+                <div class="comparison-grid">
+                    <div class="tour-item reveal">
+                        <span class="option-label">TERESA</span>
+                            <div class="img-slider">
+                            <button class="slider-btn prev" onclick="moveSlider(this, -1)">‹</button>
+                            <div class="slider-container">
+                                <img src="https://a0.muscache.com/im/pictures/miso/Hosting-836494336195573749/original/7682d56e-770e-42e6-9c9a-a8c9c2ad2130.jpeg?im_w=720" alt="Baño Teresa primera toma">
+                                <img src="https://a0.muscache.com/im/pictures/miso/Hosting-836494336195573749/original/376762d7-12d4-4dd8-93d8-40656371fd9d.jpeg?im_w=720" alt="Baño Teresa segunda toma">
+                            </div>
+                            <button class="slider-btn next" onclick="moveSlider(this, 1)">›</button>
+                        </div>
+                        <p>Uno de los dos baños disponibles. Cuenta con regadera con cortina. No hay fotos del segundo baño</p>
+                    </div>
+                    <div class="tour-item reveal">
+                        <span class="option-label">ELENA</span>
+                        <div class="img-slider">
+                            <button class="slider-btn prev" onclick="moveSlider(this, -1)">‹</button>
+                            <div class="slider-container">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/eff01919-d1fa-40ac-beb0-5febea1e158c.jpeg?im_w=720" alt="Baño Elena primera toma">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/15dcd3ad-b422-4a28-9a04-2b0c1404c1b7.jpeg?im_w=720" alt="Baño Elena segunda toma">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/c5bc6ea1-c5fd-4dbd-b7fd-af4858d29934.jpeg?im_w=1440" alt="Baño Elena tercera toma">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/31706a03-98c3-467c-8093-999d6fb2a14d.jpeg?im_w=1440" alt="Baño Elena cuarta toma">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/eb61e45d-9262-44b9-ab2b-49decc98911a.jpeg?im_w=1440" alt="Baño Elena quinta toma">
+                            </div>
+                            <button class="slider-btn next" onclick="moveSlider(this, 1)">›</button>
+                        </div>
+                        <p>Baño completo con acabados modernos y detalles pensados para mayor comodidad.</p>
+                    </div>
+                    <div class="tour-item reveal">
+                        <span class="option-label">QUINTA</span>
+                        <div class="img-slider">
+                            <button class="slider-btn prev" onclick="moveSlider(this, -1)">‹</button>
+                            <div class="slider-container">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1537789990677857104/original/f26d57d3-1f24-4348-a0ef-b758e6528d82.jpeg?im_w=1200" alt="Primer Baño Completo Quinta">
+                                <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1537789990677857104/original/1cbc3f76-d3f8-4404-bfc0-57940a2efa81.jpeg?im_w=1200" alt="Segundo Baño Completo Quinta">
+                            </div>
+                            <button class="slider-btn next" onclick="moveSlider(this, 1)">›</button>
+                        </div>
+                        <p>Dos baños completos, con buenos acabados y puertas de vidrio en la regadera.</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<section class="logistics-section">
+    <div class="tour-row">
+        <h2 class="section-title reveal">05. Logística de Misión</h2>
+        
+        <p class="logistics-subtitle reveal" style="text-align: center; color: var(--accent); font-family: 'Special Elite'; margin-top: -20px; margin-bottom: 40px; font-size: 0.9rem;">
+            BODA DE CARO & HUGO EN VISTA ENCINOS MONTEMORELOS - RAYONES, N.L. | 23 - 24 MAYO 2026
+        </p>
+        
+        <div class="comparison-grid">
+            <div class="tour-item reveal">
+                <span class="option-label">OPCIÓN 1</span>
+                <h3>Cabaña Teresa</h3>
+                <div class="dist-info">
+                    <span class="dist-time">5 MIN DE TRAYECTO</span>
+                    <div class="dist-bar-bg">
+                        <div class="dist-bar-fill color-mid" data-width="50%" style="width: 0%;"></div>
+                    </div>
+                    <p class="dist-meta">Distancia: <strong>4.7 km</strong> al evento.</p>
+                    <p class="dist-meta" style="font-size: 0.75rem; opacity: 0.7;">(10 min viaje redondo)</p>
+                    <a href="https://www.google.com/maps/dir/25.177804,-99.9276872/VISTAENCINOS+CAMPESTRE,+Montemorelos+-+Rayones,+67617+Agua+Dulce,+N.L./@25.1577801,-99.9502602,14z/data=!3m1!4b1!4m9!4m8!1m0!1m5!1m1!1s0x867d2729ec47c03d:0x10f13d882e198ad8!2m2!1d-99.932846!2d25.1376814!3e0?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-ruta">VER RUTA EN MAPS</a>
+                </div>
+            </div>
+
+            <div class="tour-item reveal best-option"> 
+                <span class="option-label">OPCIÓN 2</span>
+                <h3>Cabaña Elena</h3>
+                <div class="dist-info">
+                    <span class="dist-time">4 MIN DE TRAYECTO</span>
+                    <div class="dist-bar-bg">
+                        <div class="dist-bar-fill color-fast" data-width="20%" style="width: 0%;"></div>
+                    </div>
+                    <p class="dist-meta">Distancia: <strong>4 km</strong> al evento.</p>
+                    <p class="dist-meta" style="font-size: 0.75rem; opacity: 0.9;"> (8 min viaje redondo)</p>
+                    <a href="https://www.google.com/maps/dir/25.178152,-99.9275773/VISTAENCINOS+CAMPESTRE,+Montemorelos+-+Rayones,+67617+Agua+Dulce,+N.L./@25.1779602,-99.9295354,17.48z/data=!4m9!4m8!1m0!1m5!1m1!1s0x867d2729ec47c03d:0x10f13d882e198ad8!2m2!1d-99.932846!2d25.1376814!3e0?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-ruta">VER RUTA EN MAPS</a>
+                </div>
+            </div>
+
+            <div class="tour-item reveal">
+                <span class="option-label">OPCIÓN 3</span>
+                <h3>Quinta Moderna</h3>
+                <div class="dist-info">
+                    <span class="dist-time">10 MIN DE TRAYECTO</span>
+                    <div class="dist-bar-bg">
+                        <div class="dist-bar-fill color-slow" data-width="80%" style="width: 0%;"></div>
+                    </div>
+                    <p class="dist-meta">Distancia: <strong>10.5 km</strong> al evento.</p>
+                    <p class="dist-meta" style="font-size: 0.75rem; opacity: 0.7;">(20 min viaje redondo)</p>
+                    <a href="https://www.google.com/maps/dir/25.2151264,-99.9309018/VISTAENCINOS+CAMPESTRE,+Montemorelos+-+Rayones,+67617+Agua+Dulce,+N.L./@25.1780553,-99.9654189,13z/data=!3m1!4b1!4m9!4m8!1m0!1m5!1m1!1s0x867d2729ec47c03d:0x10f13d882e198ad8!2m2!1d-99.932846!2d25.1376814!3e0?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-ruta">VER RUTA EN MAPS</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <section id="amenidades-mision">
+            <h2 class="section-title reveal" style="text-align:center; margin-bottom:40px;">06. Comparativa Técnica</h2>
+            <div id="comparison-root"></div>
+        </section>
+        
+        <section class="footer">
+            <div class="fuego-glow"></div>
+            <canvas id="sparks-canvas"></canvas>
+            <h2 class="reveal" style="margin-bottom:30px; position:relative; z-index:5; font-family:'Special Elite';">¿Cuál es la Elegida?</h2>
+            <a href="https://wa.me/528110073544?text=Mi%20voto%20final%20es%3A%20" 
+            class="btn-vote reveal" 
+            target="_blank">
+            MANDAR VOTO POR WHATSAPP
+            </a>
+        </section>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/bundled/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+    // 1. Inicialización de Lenis (Scroll Suave)
+    const lenis = new Lenis();
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    gsap.registerPlugin(ScrollTrigger);
+    // Animación de la barra de progreso
+gsap.to(".progress-bar", {
+    width: "100%",
+    ease: "none",
+    scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.3 // El scrub le da esa sensación elástica y suave
+    }
+});
+
+    // 2. Animaciones de revelado
+    gsap.to(".reveal", {
+        opacity: 1, y: -20, duration: 1, stagger: 0.2,
+        scrollTrigger: { trigger: ".reveal", start: "top 90%" }
+    });
+
+    // 3. Glow del Footer (Fogata)
+    gsap.to(".fuego-glow", {
+        opacity: 1,
+        scrollTrigger: { trigger: ".footer", start: "top 90%", end: "top 30%", scrub: true }
+    });
+
+    // 4. Generar Estrellas
+    const starsContainer = document.querySelector('.stars');
+    starsContainer.style.height = `${document.documentElement.scrollHeight}px`;
+
+    for (let i = 0; i < 200; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        const size = Math.random() * 2;
+        star.style.width = `${size}px`; star.style.height = `${size}px`;
+        star.style.animationDelay = `${Math.random() * 5}s`;
+        starsContainer.appendChild(star);
+    }
+
+    // 5. Setup de Elementos del Mouse
+    const spotlight = document.createElement('div');
+    spotlight.style.cssText = `position: fixed; top: 0; left: 0; width: 400px; height: 400px; background: radial-gradient(circle, rgba(194,149,71,0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 1; transform: translate(-50%, -50%); mix-blend-mode: screen;`;
+    document.body.appendChild(spotlight);
+
+    const cursor = document.createElement('div');
+    cursor.className = 'mouse-emoji';
+    cursor.style.cssText = `position: fixed; top: 0; left: 0; font-size: 32px; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); user-select: none; opacity: 0; transition: opacity 0.3s;`;
+    document.body.appendChild(cursor);
+
+    // --- LÓGICA DE ROTACIÓN DE EMOJIS ---
+    const emojis = ['🥩', '🤠', '🐎', '🌲', '⛰️', '🔥'];
+    let currentEmojiIndex = 0;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    const threshold = 100; // Distancia en px para cambiar de emoji
+
+    cursor.innerHTML = emojis[currentEmojiIndex];
+
+    window.addEventListener('mousemove', (e) => {
+        cursor.style.opacity = "1";
+        
+        // Mover Cursor y Spotlight
+        gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+        gsap.to(spotlight, { x: e.clientX, y: e.clientY, duration: 0.8, ease: "power2.out" });
+
+        // Paralaje de Estrellas
+        gsap.to(".stars", {
+            x: (e.clientX - window.innerWidth / 2) * 0.02,
+            y: (e.clientY - window.innerHeight / 2) * 0.02,
+            duration: 1.2
+        });
+
+        // Cálculo de distancia para rotar emojis
+        const dist = Math.hypot(e.clientX - lastMouseX, e.clientY - lastMouseY);
+        if (dist > threshold) {
+            currentEmojiIndex = (currentEmojiIndex + 1) % emojis.length;
+            cursor.innerHTML = emojis[currentEmojiIndex];
+            
+            // Pequeño efecto al cambiar
+            gsap.fromTo(cursor, { scale: 0.5, rotation: -20 }, { scale: 1, rotation: 0, duration: 0.4, ease: "back.out(3)" });
+            
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        }
+    });
+
+    // 6. Flicker del Fuego
+    (function flicker() {
+        gsap.to(".fuego-glow", {
+            opacity: gsap.utils.random(0.4, 0.7),
+            duration: gsap.utils.random(0.1, 0.2),
+            onComplete: flicker
+        });
+    })();
+
+// 7. Sistema de Chispas Global (Canvas)
+const canvas = document.getElementById('sparks-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+// IMPORTANTE: El canvas ahora debe medir toda la ventana siempre
+function resize() { 
+    canvas.width = window.innerWidth; 
+    canvas.height = window.innerHeight; 
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Particle {
+    constructor(x, y, isClick = false) {
+        if (isClick) {
+            // Si es clic, nace donde el usuario picó
+            this.x = x;
+            this.y = y;
+            // Velocidad explosiva en todas direcciones
+            this.speedX = (Math.random() - 0.5) * 10; 
+            this.speedY = (Math.random() - 0.5) * 10;
+            this.opacity = 1;
+            this.decay = 0.015; // Se desvanecen más rápido que la fogata
+        } else {
+            // Si es fogata, nace abajo al centro
+            const fireWidth = 750; 
+            const startX = (canvas.width / 2) - (fireWidth / 2);
+            this.x = startX + Math.random() * fireWidth;
+            this.y = canvas.height + 10;
+            this.speedX = (Math.random() - 0.5) * 1.5; 
+            this.speedY = Math.random() * 2 + 1;
+            this.opacity = 1;
+            this.decay = 0.006;
+        }
+        
+        this.size = Math.random() * 2 + 0.5;
+    }
+
+    update() { 
+        this.y -= this.speedY; 
+        this.x += this.speedX; 
+        this.opacity -= this.decay; 
+    }
+
+    draw() {
+        ctx.fillStyle = `rgba(230, 126, 34, ${this.opacity})`;
+        ctx.beginPath(); 
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
+        ctx.fill();
+    }
+}
+
+function animateSparks() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Generar chispas constantes de la fogata (solo abajo)
+    if (particles.length < 150) {
+        particles.push(new Particle(null, null, false));
+    }
+
+    particles.forEach((p, i) => {
+        p.update(); 
+        p.draw();
+        if (p.opacity <= 0) particles.splice(i, 1);
+    });
+    requestAnimationFrame(animateSparks);
+}
+animateSparks();
+
+// --- EL NUEVO TRIGGER DE CLIC ---
+window.addEventListener('click', (e) => {
+    // Soltamos 40 chispas en la posición exacta del mouse
+    for(let i = 0; i < 80; i++) {
+        particles.push(new Particle(e.clientX, e.clientY, true));
+    }
+});
+    // 8. Botón WhatsApp
+    const btnVote = document.querySelector('.btn-vote');
+    if(btnVote) {
+        btnVote.addEventListener('mouseenter', () => gsap.to(btnVote, { boxShadow: "0 0 50px rgba(230, 126, 34, 0.6)", scale: 1.1, duration: 0.3 }));
+        btnVote.addEventListener('mouseleave', () => gsap.to(btnVote, { boxShadow: "0 0 0px rgba(230, 126, 34, 0)", scale: 1, duration: 0.3 }));
+    }
+
+    const btn = document.querySelector('.btn-vote');
+btn.addEventListener('mousemove', (e) => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+
+    gsap.to(btn, {
+        x: x * 0.3,
+        y: y * 0.3,
+        duration: 0.5,
+        ease: "power2.out"
+    });
+});
+
+btn.addEventListener('mouseleave', () => {
+    gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+});
+
+</script>
+<script>
+    async function cargarAmenidades() {
+        const host = document.querySelector('#comparison-root');
+        
+        // Creamos el Shadow Root
+        const shadow = host.attachShadow({ mode: 'open' });
+
+        try {
+            // 1. Buscamos el archivo index3.html
+            const response = await fetch('index3.html');
+            const text = await response.text();
+            
+            // 2. Parseamos el texto a HTML
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'text/html');
+            
+            // 3. Extraemos el template por su ID
+            const template = doc.getElementById('comparison-slider');
+            
+            // 4. Clonamos el contenido y lo inyectamos al Shadow DOM
+            shadow.appendChild(template.content.cloneNode(true));
+            
+            console.log("Comparativa de amenidades cargada con éxito.");
+        } catch (error) {
+            console.error("Error cargando index3.html:", error);
+        }
+    }
+
+    // Ejecutamos la función al cargar la página
+    window.addEventListener('DOMContentLoaded', cargarAmenidades);
+</script>
+<script>
+    function moveSlider(btn, direction) {
+    const container = btn.parentElement.querySelector('.slider-container');
+    const scrollAmount = container.clientWidth;
+    container.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+}
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".img-slider").forEach(slider => {
+        const container = slider.querySelector(".slider-container");
+        const prevBtn = slider.querySelector(".prev");
+        const nextBtn = slider.querySelector(".next");
+
+        const updateButtons = () => {
+            const scrollLeft = Math.round(container.scrollLeft);
+            const maxScroll = container.scrollWidth - container.offsetWidth;
+
+            // Log para que veas en la consola de F12 los números reales
+            // console.log(`Scroll: ${scrollLeft}, Max: ${maxScroll}`);
+
+            // Si el scroll está a menos de 5px del inicio
+            if (scrollLeft <= 5) {
+                prevBtn.classList.add("hidden");
+            } else {
+                prevBtn.classList.remove("hidden");
+            }
+
+            // Si el scroll está a menos de 5px del final
+            // Aumentamos a 5px de tolerancia por seguridad
+            if (scrollLeft >= maxScroll - 15) {
+                nextBtn.classList.add("hidden");
+            } else {
+                nextBtn.classList.remove("hidden");
+            }
+        };
+
+        // Click Events
+        prevBtn.addEventListener("click", () => {
+            container.scrollBy({ left: -container.clientWidth, behavior: 'smooth' });
+        });
+        nextBtn.addEventListener("click", () => {
+            container.scrollBy({ left: container.clientWidth, behavior: 'smooth' });
+        });
+
+        // Escuchar el scroll y cambios de tamaño
+        container.addEventListener("scroll", updateButtons);
+        window.addEventListener("resize", updateButtons);
+
+        // Inicializar
+        updateButtons();
+    });
+});
+</script>
+<script>
+// --- CONTROL DE AUDIO ---
+const audio = document.getElementById('mision-audio');
+const audioBtn = document.getElementById('audio-control');
+
+if (audioBtn && audio) {
+    const audioIcon = audioBtn.querySelector('.audio-icon');
+    const audioText = audioBtn.querySelector('.audio-text');
+    audio.volume = 0; 
+
+    audioBtn.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play();
+            audioBtn.classList.add('playing');
+            audioText.innerText = 'MISIÓN: EN CURSO';
+            audioIcon.innerText = '🔊';
+            
+            // Fade-in ultra suave hacia el 0.01
+            let vol = 0;
+            const fadeIn = setInterval(() => {
+                if (vol < 0.01) {
+                    vol += 0.002; // Sube de poquito en poquito
+                    audio.volume = Math.min(vol, 0.01);
+                } else {
+                    clearInterval(fadeIn);
+                }
+            }, 150);
+        } else {
+            audio.pause();
+            audioBtn.classList.remove('playing');
+            audioText.innerText = 'MISIÓN PAUSADA';
+            audioIcon.innerText = '🔈';
+        }
+    });
+}
+
+// --- ANIMACIÓN DE LOGÍSTICA (GSAP) ---
+window.addEventListener('load', () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // IMPORTANTE: Forzamos el reinicio de ScrollTrigger por si Lenis movió algo
+    ScrollTrigger.refresh();
+
+    const bars = document.querySelectorAll(".dist-bar-fill");
+
+    if (bars.length > 0) {
+        gsap.to(bars, {
+            width: (i, target) => target.getAttribute('data-width'),
+            duration: 2.5,
+            ease: "power4.out",
+            stagger: 0.5,
+            scrollTrigger: {
+                trigger: ".logistics-section",
+                start: "top 85%", 
+                end: "bottom 15%",
+                toggleActions: "restart reverse restart reverse",
+                // MARKERS: Esto es vital ahorita. 
+                // Si no ves unas letras que digan "start" en tu pantalla, 
+                // es que ScrollTrigger no está cargando.
+            }
+        });
+    } else {
+        console.error("No encontré las barras. Revisa que la clase sea .dist-bar-fill");
+    }
+});
+</script>
+</body>
+</html>
