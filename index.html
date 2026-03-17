@@ -434,7 +434,7 @@ a, button, .tour-item {
     padding: 12px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #fff;
+    color: var(--accent);
     text-decoration: none;
     font-size: 0.75rem;
     font-weight: 900;
@@ -447,6 +447,7 @@ a, button, .tour-item {
 .btn-ruta:hover {
     background: var(--accent);
     border-color: var(--accent);
+    color: #fff !important; /* Forzamos el color blanco para legibilidad */
     box-shadow: 0 0 15px rgba(230, 126, 34, 0.4);
     transform: translateY(-2px);
 }
@@ -511,6 +512,30 @@ a, button, .tour-item {
     0% { transform: scale(1); opacity: 0.7; }
     50% { transform: scale(1.2); opacity: 1; }
     100% { transform: scale(1); opacity: 0.7; }
+}
+
+.gallery-inspection .gallery-desc {
+    margin-top: 15px;
+    margin-bottom: 25px; /* Le damos aire al botón */
+    min-height: 50px; /* Para que todas las tarjetas se vean parejas */
+}
+
+/* Corregimos el hover del botón de galería */
+.gallery-inspection .btn-ruta {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.gallery-inspection .btn-ruta:hover {
+    background: var(--accent);
+    color: #FFF !important; /* Forzamos el color negro para legibilidad */
+    box-shadow: 0 5px 15px rgba(194, 149, 71, 0.3);
+}
+
+.gallery-inspection .tour-item:hover img {
+    opacity: 1;
 }
     </style>
     
@@ -741,10 +766,44 @@ a, button, .tour-item {
 </section>
 
         <section id="amenidades-mision">
-            <h2 class="section-title reveal" style="text-align:center; margin-bottom:40px;">06. Comparativa Técnica</h2>
-            <div id="comparison-root"></div>
+                    <h2 class="section-title reveal" style="text-align:center; margin-bottom:40px;">06. Comparativa Técnica</h2>
+                    <div id="comparison-root"></div>
         </section>
-        
+
+        <section class="tour gallery-inspection">
+            <div class="line-divider" style="width: 100%; height: 1px; background: var(--wood); margin-bottom: 50px; opacity: 0.5;"></div>
+            <h2 class="section-title">07. Inspección de Instalaciones</h2>
+            
+            <div class="comparison-grid">
+                <div class="tour-item">
+                    <div class="img-wrapper">
+                        <img src="https://a0.muscache.com/im/pictures/382d242a-f92c-4b97-80a6-ffbf7a3acaca.jpg?im_w=1200" alt="Cabaña Teresa">
+                    </div>
+                    <h3>Cabaña Teresa</h3>
+                    <p class="gallery-desc">Acceso a la galería completa: fogateros, áreas verdes y recámaras detalladas.</p>
+                    <a href="https://www.airbnb.mx/rooms/836494336195573749?modal=PHOTO_TOUR_SCROLLABLE" target="_blank" class="btn-ruta">EXPLORAR GALERÍA COMPLETA</a>
+                </div>
+
+                <div class="tour-item">
+                    <div class="img-wrapper">
+                        <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1443061264860084262/original/7e6acd7c-5e81-4f87-bd4a-52270a8ece18.jpeg?im_w=1440" alt="Cabaña Elena">
+                    </div>
+                    <h3>Cabaña Elena</h3>
+                    <p class="gallery-desc">Revisión visual de la arquitectura en madera y distribución de estancias.</p>
+                    <a href="https://www.airbnb.com.hn/rooms/1443061264860084262?modal=PHOTO_TOUR_SCROLLABLE" target="_blank" class="btn-ruta">EXPLORAR GALERÍA COMPLETA</a>
+                </div>
+
+                <div class="tour-item">
+                    <div class="img-wrapper">
+                        <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1537789990677857104/original/768ded2e-810f-4432-8770-5a6458ef79ce.jpeg?im_w=1200" alt="Quinta Moderna">
+                    </div>
+                    <h3>Quinta Moderna</h3>
+                    <p class="gallery-desc">Inspección de alberca, zona del patio con jardin y acabados contemporáneos.</p>
+                    <a href="https://www.airbnb.com.pe/rooms/1537789990677857104?modal=PHOTO_TOUR_SCROLLABLE" target="_blank" class="btn-ruta">EXPLORAR GALERÍA COMPLETA</a>
+                </div>
+            </div>
+        </section>
+                
         <section class="footer">
             <div class="fuego-glow"></div>
             <canvas id="sparks-canvas"></canvas>
