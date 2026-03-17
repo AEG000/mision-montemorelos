@@ -537,6 +537,104 @@ a, button, .tour-item {
 .gallery-inspection .tour-item:hover img {
     opacity: 1;
 }
+
+.budget-section {
+    padding-bottom: 100px;
+}
+
+.mision-label {
+    display: block;
+    font-family: 'Special Elite', cursive;
+    font-weight:700;
+    color: var(--accent);
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(194, 149, 71, 0.2);
+    padding-bottom: 5px;
+}
+
+.price-total {
+    font-family: 'Special Elite', cursive;
+    font-size: 2.2rem;
+    color: var(--highlight);
+    text-align: center;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+.price-total small {
+    font-size: 0.8rem;
+    color: var(--text);
+}
+
+.price-breakdown {
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    color: #bbb;
+}
+
+.cancelation-policy {
+    font-size: 0.75rem !important;
+    font-style: italic;
+    color: #2ecc71 !important; /* Verde para dar confianza */
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 10px;
+}
+
+/* Efecto hover especial para la sección de presupuesto */
+.budget-section .tour-item:hover {
+    border-color: var(--highlight);
+    box-shadow: 0 0 25px rgba(230, 126, 34, 0.2);
+}
+
+.policy-container {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    text-align: left;
+}
+
+.policy-title {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.policy-list {
+    list-style: none;
+    font-size: 0.7rem;
+    line-height: 1.4;
+}
+
+.policy-list li {
+    margin-bottom: 4px;
+    padding-left: 12px;
+    position: relative;
+}
+
+.policy-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+}
+
+.safe { color: #2ecc71; }    /* Verde */
+.warning { color: #f1c40f; } /* Amarillo */
+.danger { color: #e74c3c; }  /* Rojo */
+
     </style>
     
 </head>
@@ -771,7 +869,6 @@ a, button, .tour-item {
         </section>
 
         <section class="tour gallery-inspection">
-            <div class="line-divider" style="width: 100%; height: 1px; background: var(--wood); margin-bottom: 50px; opacity: 0.5;"></div>
             <h2 class="section-title">07. Inspección de Instalaciones</h2>
             
             <div class="comparison-grid">
@@ -790,7 +887,7 @@ a, button, .tour-item {
                     </div>
                     <h3>Cabaña Elena</h3>
                     <p class="gallery-desc">Revisión visual de la arquitectura en madera y distribución de estancias.</p>
-                    <a href="https://www.airbnb.com.hn/rooms/1443061264860084262?modal=PHOTO_TOUR_SCROLLABLE" target="_blank" class="btn-ruta">EXPLORAR GALERÍA COMPLETA</a>
+                    <a href="https://www.airbnb.mx/rooms/1443061264860084262?modal=PHOTO_TOUR_SCROLLABLE" target="_blank" class="btn-ruta">EXPLORAR GALERÍA COMPLETA</a>
                 </div>
 
                 <div class="tour-item">
@@ -799,7 +896,69 @@ a, button, .tour-item {
                     </div>
                     <h3>Quinta Moderna</h3>
                     <p class="gallery-desc">Inspección de alberca, zona del patio con jardin y acabados contemporáneos.</p>
-                    <a href="https://www.airbnb.com.pe/rooms/1537789990677857104?modal=PHOTO_TOUR_SCROLLABLE" target="_blank" class="btn-ruta">EXPLORAR GALERÍA COMPLETA</a>
+                    <a href="https://www.airbnb.mx/rooms/1537789990677857104?modal=PHOTO_TOUR_SCROLLABLE" target="_blank" class="btn-ruta">EXPLORAR GALERÍA COMPLETA</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="tour budget-section">
+            <h2 class="section-title">08. Presupuesto de Operación</h2>
+            
+            <div class="comparison-grid">
+                <div class="tour-item">
+                    <span class="mision-label">CABAÑA TERESA</span>
+                    <div class="price-total">$6,565.76 <small>MXN</small></div>
+                    <div class="price-breakdown">
+                        <div class="breakdown-item"><span>1 Noche (Base)</span> <span>$4,850.00</span></div>
+                        <div class="breakdown-item"><span>Tarifa Airbnb</span> <span>$794.26</span></div>
+                        <div class="breakdown-item"><span>Impuestos</span> <span>$921.50</span></div>
+                    </div>
+                    
+                    <div class="policy-container">
+                        <p class="policy-title">Protocolo de Cancelación:</p>
+                        <ul class="policy-list">
+                            <li class="safe"><strong>100% Reembolso:</strong> Antes del 23 Abr</li>
+                            <li class="warning"><strong>50% Reembolso:</strong> Antes del 16 May</li>
+                            <li class="danger"><strong>Sin Reembolso:</strong> Después del 16 May</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tour-item">
+                    <span class="mision-label">CABAÑA ELENA</span>
+                    <div class="price-total">$5,482.75 <small>MXN</small></div>
+                    <div class="price-breakdown">
+                        <div class="breakdown-item"><span>1 Noche (Base)</span> <span>$4,050.00</span></div>
+                        <div class="breakdown-item"><span>Tarifa Airbnb</span> <span>$663.25</span></div>
+                        <div class="breakdown-item"><span>Impuestos</span> <span>$769.50</span></div>
+                    </div>
+
+                    <div class="policy-container">
+                        <p class="policy-title">Protocolo de Cancelación:</p>
+                        <ul class="policy-list">
+                            <li class="safe"><strong>100% Reembolso:</strong> Antes del 23 Abr</li>
+                            <li class="warning"><strong>50% Reembolso:</strong> Antes del 16 May</li>
+                            <li class="danger"><strong>Sin Reembolso:</strong> Después del 16 May</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tour-item">
+                    <span class="mision-label">QUINTA MODERNA</span>
+                    <div class="price-total">$5,415.06 <small>MXN</small></div>
+                    <div class="price-breakdown">
+                        <div class="breakdown-item"><span>1 Noche (Base)</span> <span>$4,000.00</span></div>
+                        <div class="breakdown-item"><span>Tarifa Airbnb</span> <span>$655.06</span></div>
+                        <div class="breakdown-item"><span>Impuestos</span> <span>$760.00</span></div>
+                    </div>
+
+                    <div class="policy-container">
+                        <p class="policy-title">Protocolo de Cancelación:</p>
+                        <ul class="policy-list">
+                            <li class="safe"><strong>100% Reembolso:</strong> Antes del 18 May</li>
+                            <li class="danger"><strong>Sin Reembolso:</strong> Después del 18 May</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
@@ -807,12 +966,13 @@ a, button, .tour-item {
         <section class="footer">
             <div class="fuego-glow"></div>
             <canvas id="sparks-canvas"></canvas>
-            <h2 class="reveal" style="margin-bottom:30px; position:relative; z-index:5; font-family:'Special Elite';">¿Cuál es la Elegida?</h2>
-            <a href="https://wa.me/528110073544?text=Mi%20voto%20final%20es%3A%20" 
-            class="btn-vote reveal" 
-            target="_blank">
-            MANDAR VOTO POR WHATSAPP
-            </a>
+        <h2 class="reveal" style="margin-bottom:30px; position:relative; z-index:5; font-family:'Special Elite';">¿Cuál es la Elegida?</h2>
+
+        <a href="https://wa.me/528110073544?text=*ORDEN%20DE%20OPERACI%C3%93N%3A%20MONTEMORELOS*%0A%0AMi%20nombre%20es%3A%20%0AMi%20voto%20final%20para%20la%20misi%C3%B3n%20es%3A%20" 
+        class="btn-vote reveal" 
+        target="_blank">
+        MANDAR VOTO OFICIAL
+        </a>
         </section>
 
     </div>
